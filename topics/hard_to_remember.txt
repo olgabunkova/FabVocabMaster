@@ -1,0 +1,45 @@
+Painter, Художник, Hoo-dozh-nik
+Writer, Писатель, Pee-sa-tyel
+People, Люди, Lyu-dee
+Parents, Родители, Ro-dee-tye-lee
+Kids, Дети, Dye-tee
+To wash (sth / oneself), Мыть / Мыться, Myth / Myth-sya
+To sew, Шить, Sheeth
+To live, Жить, Zheet
+To leave, Уходить, Oo-ho-deeth
+Passed / Went by, Прошло, Prosh-lo
+Money, Деньги, Dyen-gi
+Watch / Clock, Часы, Cha-sy
+Glasses, Очки, Och-kee
+Hand, Рука, Roo-ka
+Bottle, Бутылка, Boo-tyl-ka
+Window, Окно, Ok-no
+Letter, Письмо, Pees-mo
+City, Город, Go-rod
+Island, Остров, Os-trov
+Forest, Лес, Lyes
+Train, Поезд, Po-yezd
+Lake, Озеро, O-zye-ro
+River, Река, Rye-ka
+Mountain, Гора, Go-ra
+Language, Язык, Ya-zyk
+Family, Семья, Syem-ya
+Word, Слово, Slo-vo
+Who, Кто, Kto
+What, Что, Shto
+How, Как, Kak
+When, Когда, Kog-da
+Only, Только, Tol-ko
+Often, Часто, Chas-to
+Very, Очень, O-chyen
+Also, Тоже, To-zhe
+Furthermore / Yet, Ещё, Ye-shyo
+All, Все, Vsye
+A bit, Чуть, Choot
+Hour, Час, Chas
+Shocking (slang), Жесть, Zhest
+Yes I have, Да есть, Da yest
+And you?, А у Вас?, A oo vas?
+No I don't have, Нет у меня нет, Nyet oo me-nya nyet
+Of course I have, Конечно есть, Ko-nyech-no yest
+

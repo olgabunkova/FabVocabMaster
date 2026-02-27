@@ -1,0 +1,78 @@
+Friend (m/f/pl), Друг / Подруга / Друзья, Droog / Pod-roo-ga / Drooz-ya
+Billionaire, Миллиардер, Mil-lee-ar-der
+Revolutionary, Революционер, Rye-vo-lyu-tsee-o-nyer
+Dictator, Диктатор, Dik-ta-tor
+Painter, Художник, Hoo-dozh-nik
+Writer, Писатель, Pee-sa-tyel
+Leader, Лидер, Lee-der
+Genius, Гений, Gye-niy
+People, Люди, Lyu-dee
+Parents, Родители, Ro-dee-tye-lee
+Kids, Дети, Dye-tee
+Champion, Чемпион, Chem-pee-on
+To love, Любить, Lyu-beeth
+To wash (sth / oneself), Мыть / Мыться, Myth / Myth-sya
+To sew, Шить, Sheeth
+To live, Жить, Zheet
+To leave, Уходить, Oo-ho-deeth
+Passed / Went by, Прошло, Prosh-lo
+(Their) Name is..., Зовут, Zo-voot
+Money, Деньги, Dyen-gi
+Watch / Clock, Часы, Cha-sy
+Glasses, Очки, Och-kee
+Trousers, Брюки, Bryoo-kee
+Jeans, Джинсы, Jihn-sy
+Soap, Мыло, My-lo
+Hand, Рука, Roo-ka
+Bottle, Бутылка, Boo-tyl-ka
+Passport, Паспорт, Pas-port
+Bill / Check, Чек, Chek
+Rouble, Рубль, Roo-bl
+Window, Окно, Ok-no
+Letter, Письмо, Pees-mo
+Serie (TV show), Сериал, Sye-ree-al
+City, Город, Go-rod
+Island, Остров, Os-trov
+Forest, Лес, Lyes
+Train, Поезд, Po-yezd
+Lake, Озеро, O-zye-ro
+River, Река, Rye-ka
+Sea, Море, Mo-rye
+Ocean, Океан, O-kye-an
+Mountain, Гора, Go-ra
+Language, Язык, Ya-zyk
+Store / Shop, Магазин, Ma-ga-zeen
+Hotel, Отель, O-tyel
+Car, Машина, Ma-shee-na
+Family, Семья, Syem-ya
+Word, Слово, Slo-vo
+Book, Книга, Knee-ga
+Who, Кто, Kto
+What, Что, Shto
+How, Как, Kak
+When, Когда, Kog-da
+Me / My (Acc/Gen), Меня, Me-nya
+You / Your (Acc/Gen), Тебя, Te-bya
+Him / His, Его, Ye-vo
+Her, Её, Ye-yo
+Us, Нас, Nas
+You (formal/pl), Вас, Vas
+Them, Их, Eekh
+Here, Здесь, Zdyes
+There, Там, Tam
+With, С, S
+In, В, V
+Only, Только, Tol-ko
+Often, Часто, Chas-to
+Very, Очень, O-chyen
+Also, Тоже, To-zhe
+Furthermore / Yet, Ещё, Ye-shyo
+All, Все, Vsye
+A bit, Чуть, Choot
+Hour, Час, Chas
+Shocking (slang), Жесть, Zhest
+Yes I have, Да есть, Da yest
+And you?, А у Вас?, A oo vas?
+No I don't have, Нет у меня нет, Nyet oo me-nya nyet
+Of course I have, Конечно есть, Ko-nyech-no yest
+
