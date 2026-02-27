@@ -2,290 +2,550 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="RusMaster">
+    <meta name="theme-color" content="#2c3e50">
+    <link rel="manifest" href="manifest.json">
     <title>Russian Vocab Master</title>
     <style>
-        :root { 
-            --primary: #2c3e50; 
-            --accent: #3498db; 
-            --success: #27ae60; 
-            --error: #e74c3c; 
-            --warning: #f39c12;
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
             --muted: #94a3b8;
-            --bg: #f8fafc; 
+            --bg: #f8fafc;
             --card-bg: #ffffff;
         }
-        
-        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: var(--primary); }
-        .container { background: var(--card-bg); padding: 2.5rem; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.08); width: 90%; max-width: 550px; position: relative; }
-        
-        h1 { margin-top: 0; font-weight: 800; letter-spacing: -1px; text-align: center; color: var(--primary); }
-        
-        .info-box { background: #ebf8ff; border-left: 4px solid var(--accent); padding: 20px; border-radius: 12px; margin: 20px 0; font-size: 0.9rem; line-height: 1.5; }
-        .info-box code { background: rgba(0,0,0,0.05); padding: 2px 5px; border-radius: 4px; font-family: monospace; font-weight: bold; }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            min-height: 100dvh;
+            margin: 0;
+            color: var(--primary);
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+
+        .container {
+            background: var(--card-bg);
+            padding: clamp(1.25rem, 5vw, 2.5rem);
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+            width: 95%;
+            max-width: 550px;
+            margin: clamp(0.5rem, 3vw, 2rem) auto;
+        }
+
+        h1 {
+            margin-top: 0;
+            font-weight: 800;
+            letter-spacing: -1px;
+            text-align: center;
+            color: var(--primary);
+            font-size: clamp(1.5rem, 5vw, 2rem);
+        }
+
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid var(--accent);
+            padding: 16px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .info-box code {
+            background: rgba(0,0,0,0.05);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-weight: bold;
+            word-break: break-all;
+        }
         .info-box strong { display: block; margin-bottom: 5px; color: var(--accent); font-size: 1rem; }
-        
-        .btn { border: none; padding: 14px 24px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: 700; font-size: 1rem; transition: all 0.2s ease; margin-top: 10px; }
-        .btn-primary { background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); }
-        .btn-success { background: var(--success); color: white; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); }
-        .btn-error { background: var(--error); color: white; }
-        .btn-ghost { background: transparent; color: var(--muted); border: 2px solid #e2e8f0; margin-top: 20px; }
-        .btn-ghost:hover { background: #f1f5f9; color: var(--primary); }
-        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        .topic-list { margin: 20px 0; max-height: 200px; overflow-y: auto; border: 1px solid #e2e8f0; padding: 10px; border-radius: 12px; }
-        .topic-item { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #f1f5f9; transition: background 0.2s; }
-        .topic-item:hover { background: #f8fafc; }
+        /* Buttons */
+        .btn {
+            border: none;
+            padding: clamp(12px, 3vw, 16px) 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: 700;
+            font-size: clamp(0.95rem, 3vw, 1rem);
+            transition: transform 0.15s ease, opacity 0.15s ease;
+            margin-top: 10px;
+            /* Prevent double-tap zoom on iOS */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-primary { background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(52,152,219,0.3); }
+        .btn-success { background: var(--success); color: white; box-shadow: 0 4px 15px rgba(39,174,96,0.3); }
+        .btn-error   { background: var(--error);   color: white; }
+        .btn-ghost   { background: transparent; color: var(--muted); border: 2px solid #e2e8f0; margin-top: 20px; }
+        .btn:active  { transform: scale(0.97); opacity: 0.85; }
+        @media (hover: hover) {
+            .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+            .btn-ghost:hover { background: #f1f5f9; color: var(--primary); }
+        }
 
+        /* Topic list */
+        .topic-list {
+            margin: 20px 0;
+            max-height: 220px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            padding: 8px;
+            border-radius: 12px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .topic-item {
+            display: flex;
+            align-items: center;
+            padding: clamp(10px, 3vw, 14px) 10px;
+            border-bottom: 1px solid #f1f5f9;
+            gap: 12px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.15s;
+        }
+        .topic-item:last-child { border-bottom: none; }
+        .topic-item:active { background: #f1f5f9; }
+        @media (hover: hover) { .topic-item:hover { background: #f8fafc; } }
+        .topic-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+        .topic-item label { font-weight: 600; cursor: pointer; flex: 1; }
+
+        /* Quiz card */
         .card { text-align: center; padding: 10px 0; }
-        .word-display { font-size: 3rem; font-weight: 800; margin-bottom: 5px; color: var(--primary); }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 25px; }
-        .option-btn { padding: 16px; border: 2px solid #f1f5f9; border-radius: 15px; background: white; cursor: pointer; font-size: 1.1rem; font-weight: 800; transition: 0.2s; }
-        .option-btn:hover { border-color: var(--accent); background: #f0f9ff; color: var(--accent); }
-        
-        #custom-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; visibility: hidden; opacity: 0; transition: 0.3s; }
-        #custom-modal.active { visibility: visible; opacity: 1; }
-        .modal-content { background: white; padding: 30px; border-radius: 20px; text-align: center; max-width: 400px; width: 80%; }
+        .word-display {
+            font-size: clamp(2rem, 8vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 5px;
+            color: var(--primary);
+            line-height: 1.2;
+            word-break: break-word;
+        }
+        .pron-display {
+            color: var(--muted);
+            font-style: italic;
+            font-size: clamp(0.95rem, 3vw, 1.1rem);
+            min-height: 1.5rem;
+        }
 
-        .progress-bar { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; margin: 15px 0; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--success); width: 0%; transition: 0.4s; }
+        /* Multiple choice grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(8px, 2vw, 12px);
+            margin-top: 20px;
+        }
+        .option-btn {
+            padding: clamp(14px, 4vw, 18px) 10px;
+            border: 2px solid #f1f5f9;
+            border-radius: 15px;
+            background: white;
+            cursor: pointer;
+            font-size: clamp(0.95rem, 3vw, 1.1rem);
+            font-weight: 800;
+            transition: border-color 0.15s, background 0.15s, color 0.15s;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            word-break: break-word;
+            line-height: 1.3;
+        }
+        .option-btn:active { border-color: var(--accent); background: #f0f9ff; color: var(--accent); }
+        @media (hover: hover) {
+            .option-btn:hover { border-color: var(--accent); background: #f0f9ff; color: var(--accent); }
+        }
+
+        /* Open recall */
+        #ans-reveal-btn { margin-top: 20px; }
+        #ans-box { margin-top: 20px; }
+        #correct-ans { color: var(--success); margin-bottom: 16px; font-size: clamp(1.5rem, 6vw, 2rem); }
+        .self-check-row { display: flex; gap: 12px; }
+        .self-check-row .btn { flex: 1; }
+
+        /* Progress bar */
+        .progress-bar { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; margin: 12px 0; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--success); width: 0%; transition: width 0.4s; }
+
+        /* Stats row */
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+            font-size: clamp(0.7rem, 2.5vw, 0.8rem);
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Modal */
+        #custom-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.25s, visibility 0.25s;
+            padding: 1rem;
+        }
+        #custom-modal.active { visibility: visible; opacity: 1; }
+        .modal-content {
+            background: white;
+            padding: clamp(20px, 5vw, 30px);
+            border-radius: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 380px;
+        }
+        .modal-content h2 { margin-top: 0; }
+        .modal-content p { color: #64748b; margin-bottom: 20px; }
+
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
 <div class="container">
+
+    <!-- Setup screen -->
     <div id="setup-screen">
         <h1>Russian Master</h1>
-        
+
         <div id="server-instructions" class="hidden info-box">
-            <strong>🚀 Ready to start?</strong>
-            To load your vocab automatically, please run a local server in this folder:
-            <code style="display:block; margin: 10px 0; background: #fff; padding: 10px; border-radius: 8px;">python3 -m http.server 8000</code>
+            <strong>⚠️ Could not load topics</strong>
+            Make sure you are opening this app via a web server, not directly as a file.<br><br>
+            <strong>Option A — Local (same Wi-Fi):</strong><br>
+            <code style="display:block; margin: 6px 0; background:#fff; padding:8px; border-radius:8px;">python3 local_server.py</code>
+            Then open <code>http://&lt;your-mac-ip&gt;:8000/russian_app.html</code><br><br>
+            <strong>Option B — Online (no PC needed):</strong><br>
+            Push this folder to GitHub and enable <code>GitHub Pages</code> in the repo settings. Then open the Pages URL on any device.
         </div>
 
         <div id="topic-container" class="hidden">
             <h3 style="margin-bottom:10px;">Select topics:</h3>
             <div id="topic-list" class="topic-list"></div>
-            <button class="btn btn-success" onclick="startSession()">Start Practice</button>
+            <button class="btn btn-success" id="start-btn">Start Practice</button>
         </div>
     </div>
 
+    <!-- Quiz screen -->
     <div id="quiz-screen" class="hidden">
-        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.8rem; color: var(--muted); text-transform: uppercase;">
+        <div class="stats-row">
             <span id="score-text">Score: 0</span>
             <span id="queue-text">Cards Left: 0</span>
         </div>
         <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
-        
+
         <div class="card">
-            <div id="mode-label" style="color:var(--accent); font-size:0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;"></div>
+            <div id="mode-label" style="color:var(--accent); font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;"></div>
             <div class="word-display" id="target-word"></div>
-            <div id="target-pron" style="color: var(--muted); font-style: italic; font-size: 1.1rem; min-height: 1.5rem;"></div>
+            <div class="pron-display" id="target-pron"></div>
 
-            <div id="mc-ui" class="options-grid"></div>
+            <!-- Multiple choice -->
+            <div id="mc-ui" class="options-grid hidden"></div>
 
+            <!-- Open recall -->
             <div id="open-ui" class="hidden">
-                <button class="btn btn-primary" onclick="showOpenAnswer()">Show Answer</button>
-                <div id="ans-box" class="hidden" style="margin-top: 20px;">
-                    <h2 id="correct-ans" style="color:var(--success); margin-bottom: 20px; font-size: 2rem;"></h2>
-                    <p style="font-weight: bold; color: #64748b;">Did you get it right?</p>
-                    <div style="display:flex; gap:12px;">
-                        <button class="btn btn-success" onclick="handleResult(true)">Yes</button>
-                        <button class="btn btn-error" onclick="handleResult(false)">No</button>
+                <button class="btn btn-primary" id="ans-reveal-btn">Show Answer</button>
+                <div id="ans-box" class="hidden">
+                    <h2 id="correct-ans"></h2>
+                    <p style="font-weight:bold; color:#64748b;">Did you get it right?</p>
+                    <div class="self-check-row">
+                        <button class="btn btn-success" id="yes-btn">Yes ✓</button>
+                        <button class="btn btn-error"   id="no-btn">No ✗</button>
                     </div>
                 </div>
             </div>
 
-            <button id="skip-btn" class="btn btn-ghost" onclick="handleIDontKnow()">I don't know</button>
+            <button id="skip-btn" class="btn btn-ghost">I don't know</button>
         </div>
     </div>
+
 </div>
 
-<div id="custom-modal">
+<!-- Modal -->
+<div id="custom-modal" role="dialog" aria-modal="true">
     <div class="modal-content">
         <h2 id="modal-title">Notice</h2>
-        <p id="modal-body" style="color: #64748b; margin-bottom: 25px;"></p>
-        <button class="btn btn-primary" onclick="closeModal()">Got it</button>
+        <p id="modal-body"></p>
+        <button class="btn btn-primary" id="modal-ok-btn">Got it</button>
     </div>
 </div>
 
 <script>
-    let rawFileData = {}; 
-    let masterList = [];
-    let queue = [];
-    let score = 0;
-    let totalAtStart = 0;
+'use strict';
 
-    const formatName = (n) => n.replace('.txt', '').replace(/_/g, ' ').toUpperCase();
+// ── State ──────────────────────────────────────────────────────────────────
+const state = {
+    rawFileData: {},   // filename → raw text
+    masterList:  [],   // all card pairs
+    queue:       [],   // remaining cards this session
+    score:       0,
+    totalAtStart: 0,
+    modalCallback: null,
+};
 
-    function showAlert(title, body, onConfirm = null) {
-        document.getElementById('modal-title').innerText = title;
-        document.getElementById('modal-body').innerText = body;
-        const modal = document.getElementById('custom-modal');
-        modal.classList.add('active');
-        window.modalCallback = onConfirm;
-    }
+// ── Helpers ────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const formatName = name => name.replace(/\.txt$/i, '').replace(/_/g, ' ').toUpperCase();
 
-    function closeModal() {
-        document.getElementById('custom-modal').classList.remove('active');
-        if(window.modalCallback) window.modalCallback();
-    }
+function show(id) { $(id).classList.remove('hidden'); }
+function hide(id) { $(id).classList.add('hidden'); }
 
-    document.addEventListener('DOMContentLoaded', async () => {
-        if (location.protocol === 'file:') {
-            document.getElementById('server-instructions').classList.remove('hidden');
-            return;
-        }
-        const ok = await attemptAutoLoadTopics();
-        if (!ok) document.getElementById('server-instructions').classList.remove('hidden');
-    });
+function showModal(title, bodyHTML, onConfirm = null) {
+    $('modal-title').innerHTML = title;
+    $('modal-body').innerHTML  = bodyHTML;
+    $('custom-modal').classList.add('active');
+    state.modalCallback = onConfirm;
+}
 
-    async function attemptAutoLoadTopics() {
-        try {
-            const res = await fetch('./topics/');
-            if (!res.ok) return false;
-            const html = await res.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const links = Array.from(doc.querySelectorAll('a'))
-                .map(a => a.getAttribute('href'))
-                .filter(h => h && h.toLowerCase().endsWith('.txt'))
-                .map(h => h.split('/').pop());
-            return await loadTopicsFromList(links);
-        } catch (err) { return false; }
-    }
+function closeModal() {
+    $('custom-modal').classList.remove('active');
+    const cb = state.modalCallback;
+    state.modalCallback = null;
+    if (cb) cb();
+}
 
-    async function loadTopicsFromList(names) {
-        rawFileData = {};
-        const listDiv = document.getElementById('topic-list');
-        listDiv.innerHTML = '';
-        for (const name of names) {
-            try {
-                const r = await fetch(`./topics/${name}`);
-                const text = await r.text();
-                rawFileData[name] = text;
-                const div = document.createElement('div');
-                div.className = 'topic-item';
-                div.innerHTML = `<input type="checkbox" class="topic-cb" id="${name}" checked style="width:18px; height:18px;">
-                                 <label style="margin-left:12px; cursor:pointer; font-weight:600;" for="${name}">${formatName(name)}</label>`;
-                listDiv.appendChild(div);
-            } catch (e) {}
-        }
-        if (Object.keys(rawFileData).length > 0) {
-            document.getElementById('topic-container').classList.remove('hidden');
-            return true;
-        }
+// ── Bootstrap ──────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+    // Wire up static buttons once
+    $('start-btn').addEventListener('click', startSession);
+    $('ans-reveal-btn').addEventListener('click', showOpenAnswer);
+    $('yes-btn').addEventListener('click', () => handleResult(true));
+    $('no-btn').addEventListener('click', () => handleResult(false));
+    $('skip-btn').addEventListener('click', handleIDontKnow);
+    $('modal-ok-btn').addEventListener('click', closeModal);
+
+    const ok = await loadTopics();
+    if (!ok) show('server-instructions');
+});
+
+// ── Topic loading (uses index.json — no directory scraping) ────────────────
+async function loadTopics() {
+    let names;
+    try {
+        const res = await fetch('./topics/index.json');
+        if (!res.ok) return false;
+        names = await res.json();
+        if (!Array.isArray(names) || names.length === 0) return false;
+    } catch {
         return false;
     }
 
-    function startSession() {
-        masterList = [];
-        const checkboxes = document.querySelectorAll('.topic-cb:checked');
-        checkboxes.forEach(cb => {
-            const text = rawFileData[cb.id];
-            text.split('\n').filter(l => l.includes(',')).forEach(l => {
-                const p = l.split(',').map(s => s.trim());
-                masterList.push({ question: p[0], answer: p[1], pron: p[2] || "", dir: "Eng ➔ Rus" });
-                masterList.push({ question: p[1], answer: p[0], pron: p[2] || "", dir: "Rus ➔ Eng" });
-            });
+    state.rawFileData = {};
+    const listDiv = $('topic-list');
+    listDiv.innerHTML = '';
+
+    // Fetch all files in parallel
+    await Promise.all(names.map(async name => {
+        try {
+            const r = await fetch(`./topics/${name}`);
+            if (!r.ok) return;
+            state.rawFileData[name] = await r.text();
+
+            const item = document.createElement('div');
+            item.className = 'topic-item';
+
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.className = 'topic-cb';
+            cb.id = name;
+            cb.checked = true;
+
+            const lbl = document.createElement('label');
+            lbl.htmlFor = name;
+            lbl.textContent = formatName(name);
+
+            // Tapping the row label area toggles the checkbox.
+            // We stop propagation on the checkbox itself so its native
+            // click doesn't bubble up and fire the row handler too
+            // (which would toggle it a second time, undoing the change).
+            cb.addEventListener('click', e => e.stopPropagation());
+            item.addEventListener('click', () => { cb.checked = !cb.checked; });
+
+            item.append(cb, lbl);
+            listDiv.appendChild(item);
+        } catch { /* skip unreadable files */ }
+    }));
+
+    if (Object.keys(state.rawFileData).length === 0) return false;
+    show('topic-container');
+    return true;
+}
+
+// ── Session start ──────────────────────────────────────────────────────────
+function parseCards(text) {
+    const cards = [];
+    for (const line of text.split('\n')) {
+        const firstComma  = line.indexOf(',');
+        if (firstComma === -1) continue;
+        const secondComma = line.indexOf(',', firstComma + 1);
+        const eng  = line.slice(0, firstComma).trim();
+        const rus  = (secondComma === -1 ? line.slice(firstComma + 1) : line.slice(firstComma + 1, secondComma)).trim();
+        const pron = secondComma === -1 ? '' : line.slice(secondComma + 1).trim();
+        if (eng && rus) cards.push({ eng, rus, pron });
+    }
+    return cards;
+}
+
+function startSession() {
+    const checked = [...document.querySelectorAll('.topic-cb:checked')];
+    const cards = checked.flatMap(cb => parseCards(state.rawFileData[cb.id] || ''));
+
+    if (cards.length === 0) {
+        showModal('Empty Selection', 'Please select at least one topic with vocabulary.');
+        return;
+    }
+
+    // Build both directions
+    state.masterList = cards.flatMap(({ eng, rus, pron }) => [
+        { question: eng, answer: rus, pron, dir: 'Eng ➔ Rus' },
+        { question: rus, answer: eng, pron, dir: 'Rus ➔ Eng' },
+    ]);
+
+    state.queue        = [...state.masterList].sort(() => Math.random() - 0.5);
+    state.totalAtStart = state.queue.length;
+    state.score        = 0;
+
+    $('score-text').textContent = 'Score: 0';
+    hide('setup-screen');
+    show('quiz-screen');
+    nextQuestion();
+}
+
+// ── Quiz flow ──────────────────────────────────────────────────────────────
+function nextQuestion() {
+    if (state.queue.length === 0) {
+        showModal('🎉 All Done!', `Final Score: ${state.score}/${state.totalAtStart}`, () => {
+            hide('quiz-screen');
+            show('setup-screen');
         });
-
-        if (masterList.length === 0) {
-            showAlert("Empty Topic", "Please select a topic with vocabulary.");
-            return;
-        }
-        queue = [...masterList].sort(() => Math.random() - 0.5);
-        totalAtStart = queue.length;
-        score = 0;
-        document.getElementById('score-text').innerText = `Score: 0`;
-        document.getElementById('setup-screen').classList.add('hidden');
-        document.getElementById('quiz-screen').classList.remove('hidden');
-        nextQuestion();
+        return;
     }
 
-    function nextQuestion() {
-        if (queue.length === 0) {
-            showAlert("🎉 All Done!", `Final Score: ${score}/${totalAtStart}`, () => {
-                document.getElementById('quiz-screen').classList.add('hidden');
-                document.getElementById('setup-screen').classList.remove('hidden');
-            });
-            return;
-        }
-        
-        document.getElementById('progress-fill').style.width = `${((totalAtStart - queue.length) / totalAtStart) * 100}%`;
-        document.getElementById('queue-text').innerText = `Cards Left: ${queue.length}`;
-        document.getElementById('skip-btn').classList.remove('hidden');
-        
-        const item = queue[0];
-        document.getElementById('target-word').innerText = item.question.toLowerCase();
-        document.getElementById('target-pron').innerText = (item.dir === "Rus ➔ Eng" && item.pron) ? `[${item.pron.toLowerCase()}]` : "";
-        document.getElementById('ans-box').classList.add('hidden');
-        
-        const mode = (Math.random() > 0.4 && masterList.length >= 8) ? 'mc' : 'open';
-        if (mode === 'mc') setupMC(item); else setupOpen(item);
+    const pct = ((state.totalAtStart - state.queue.length) / state.totalAtStart) * 100;
+    $('progress-fill').style.width = `${pct}%`;
+    $('queue-text').textContent = `Cards Left: ${state.queue.length}`;
+    show('skip-btn');
+
+    const item = state.queue[0];
+    $('target-word').textContent = item.question.toLowerCase();
+    $('target-pron').textContent = (item.dir === 'Rus ➔ Eng' && item.pron)
+        ? `[${item.pron.toLowerCase()}]` : '';
+    hide('ans-box');
+
+    const useMC = Math.random() > 0.4 && state.masterList.length >= 8;
+    useMC ? setupMC(item) : setupOpen(item);
+}
+
+function setupMC(item) {
+    $('mode-label').textContent = 'Multiple Choice';
+    show('mc-ui');
+    hide('open-ui');
+
+    const sameDir = state.masterList.filter(m => m.dir === item.dir).map(m => m.answer);
+    const choices = [item.answer];
+    const pool = sameDir.filter(a => a !== item.answer).sort(() => Math.random() - 0.5);
+    for (const a of pool) {
+        if (choices.length >= 4) break;
+        choices.push(a);
     }
+    choices.sort(() => Math.random() - 0.5);
 
-    function setupMC(item) {
-        document.getElementById('mode-label').innerText = "Multiple Choice";
-        document.getElementById('mc-ui').classList.remove('hidden');
-        document.getElementById('open-ui').classList.add('hidden');
-        
-        let choices = [item.answer];
-        let potentialDistractors = masterList.filter(m => m.dir === item.dir).map(m => m.answer);
-        while (choices.length < 4 && choices.length < potentialDistractors.length) {
-            let rand = potentialDistractors[Math.floor(Math.random() * potentialDistractors.length)];
-            if (!choices.includes(rand)) choices.push(rand);
-        }
-        choices.sort(() => Math.random() - 0.5);
-
-        const container = document.getElementById('mc-ui');
-        container.innerHTML = '';
-        choices.forEach(c => {
-            const b = document.createElement('button');
-            b.className = 'option-btn';
-            b.innerText = c.toLowerCase();
-            b.onclick = () => {
-                if (c === item.answer) { 
-                    score++; 
-                    document.getElementById('score-text').innerText = `Score: ${score}`;
-                    handleResult(true); 
-                } else { 
-                    showAlert("Not quite!", `The correct answer was: ${item.answer}`, () => handleResult(false));
-                }
-            };
-            container.appendChild(b);
+    const container = $('mc-ui');
+    container.innerHTML = '';
+    choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = choice.toLowerCase();
+        btn.addEventListener('click', () => {
+            if (choice === item.answer) {
+                state.score++;
+                $('score-text').textContent = `Score: ${state.score}`;
+                handleResult(true);
+            } else {
+                const pronHint = item.pron
+                    ? `<div style="color:var(--accent);font-style:italic;margin-top:4px;">[${item.pron.toLowerCase()}]</div>`
+                    : '';
+                const bodyHTML =
+                    `<div style="font-size:1.3rem;font-weight:800;color:var(--primary);margin-bottom:12px;">"${item.question.toLowerCase()}"</div>` +
+                    `The correct answer was:<br><strong style="font-size:1.2rem;">${item.answer.toLowerCase()}</strong>${pronHint}`;
+                showModal('❌ Not quite!', bodyHTML, () => handleResult(false));
+            }
         });
-    }
+        container.appendChild(btn);
+    });
+}
 
-    function setupOpen(item) {
-        document.getElementById('mode-label').innerText = "Open Recall";
-        document.getElementById('mc-ui').classList.add('hidden');
-        document.getElementById('open-ui').classList.remove('hidden');
-        if (item.dir === "Eng ➔ Rus" && item.pron) {
-            document.getElementById('correct-ans').innerHTML = `${item.answer.toLowerCase()}<div style="color: var(--accent); font-style: italic; font-size:1rem; margin-top:8px;">[${item.pron.toLowerCase()}]</div>`;
-        } else {
-            document.getElementById('correct-ans').innerText = item.answer.toLowerCase();
-        }
-    }
+function setupOpen(item) {
+    $('mode-label').textContent = 'Open Recall';
+    hide('mc-ui');
+    show('open-ui');
 
-    function showOpenAnswer() {
-        document.getElementById('ans-box').classList.remove('hidden');
-        document.getElementById('skip-btn').classList.add('hidden'); // Hide skip once answer is shown
+    if (item.dir === 'Eng ➔ Rus' && item.pron) {
+        $('correct-ans').innerHTML =
+            `${item.answer.toLowerCase()}<div style="color:var(--accent);font-style:italic;font-size:1rem;margin-top:8px;">[${item.pron.toLowerCase()}]</div>`;
+    } else {
+        $('correct-ans').textContent = item.answer.toLowerCase();
     }
+}
 
-    function handleIDontKnow() {
-        const item = queue[0];
-        showAlert("Study This Word", `The answer is: ${item.answer}`, () => {
-            handleResult(false);
-        });
-    }
+function showOpenAnswer() {
+    show('ans-box');
+    hide('skip-btn');
+}
 
-    function handleResult(correct) {
-        const item = queue.shift();
-        if (!correct) queue.push(item);
-        nextQuestion();
-    }
+function handleIDontKnow() {
+    const item = state.queue[0];
+    const pronHint = item.pron
+        ? `<div style="color:var(--accent);font-style:italic;margin-top:4px;">[${item.pron.toLowerCase()}]</div>`
+        : '';
+    const bodyHTML =
+        `<div style="font-size:1.3rem;font-weight:800;color:var(--primary);margin-bottom:12px;">"${item.question.toLowerCase()}"</div>` +
+        `The answer is:<br><strong style="font-size:1.2rem;">${item.answer.toLowerCase()}</strong>${pronHint}`;
+    showModal('📖 Study This Word', bodyHTML, () => handleResult(false));
+}
+
+function handleResult(correct) {
+    const item = state.queue.shift();
+    if (!correct) state.queue.push(item);
+    nextQuestion();
+}
+
+// ── PWA service worker ─────────────────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {/* offline support optional */});
+}
+
+// ── Server heartbeat (keeps local_server.py alive while tab is open) ───────
+// Only fires when running against the local Python server (port 8000).
+(function startHeartbeat() {
+    if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1'
+        && !location.hostname.startsWith('192.168.')) return;
+    const INTERVAL = 3000;
+    setInterval(() => fetch('./ping', { cache: 'no-store' }).catch(() => {}), INTERVAL);
+}());
 </script>
 </body>
 </html>
