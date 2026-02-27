@@ -275,6 +275,11 @@
         document.getElementById('score-text').innerText = `Score: ${score}`;
         nextQuestion();
     }
+
+  // Send a silent "I'm still here" ping every 2 seconds
+    setInterval(() => {
+        fetch('/ping').catch(() => {});
+    }, 2000);
 </script>
 </body>
 </html>

@@ -4,7 +4,7 @@
     {
       "label": "Serve Russian App",
       "type": "shell",
-      "command": "${workspaceFolder}/serve.sh",
+      "command": "${workspaceFolder}/../serve.sh",
       "presentation": {
         "reveal": "always",
         "panel": "dedicated"
