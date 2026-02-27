@@ -233,13 +233,10 @@
         <h1>Russian Master</h1>
 
         <div id="server-instructions" class="hidden info-box">
-            <strong>⚠️ Could not load topics</strong>
-            Make sure you are opening this app via a web server, not directly as a file.<br><br>
-            <strong>Option A — Local (same Wi-Fi):</strong><br>
-            <code style="display:block; margin: 6px 0; background:#fff; padding:8px; border-radius:8px;">python3 local_server.py</code>
-            Then open <code>http://&lt;your-mac-ip&gt;:8000/russian_app.html</code><br><br>
-            <strong>Option B — Online (no PC needed):</strong><br>
-            Push this folder to GitHub and enable <code>GitHub Pages</code> in the repo settings. Then open the Pages URL on any device.
+            <strong>🚀 Start the local server</strong>
+            Open a terminal in this folder and run:
+            <code style="display:block; margin: 10px 0; background:#fff; padding:10px; border-radius:8px;">python3 local_server.py</code>
+            Then open <code>http://localhost:8000/russian_app.html</code> in your browser.
         </div>
 
         <div id="topic-container" class="hidden">
@@ -337,6 +334,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     $('skip-btn').addEventListener('click', handleIDontKnow);
     $('modal-ok-btn').addEventListener('click', closeModal);
 
+    if (location.protocol === 'file:') {
+        show('server-instructions');
+        return;
+    }
     const ok = await loadTopics();
     if (!ok) show('server-instructions');
 });
@@ -537,15 +538,6 @@ function handleResult(correct) {
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {/* offline support optional */});
 }
-
-// ── Server heartbeat (keeps local_server.py alive while tab is open) ───────
-// Only fires when running against the local Python server (port 8000).
-(function startHeartbeat() {
-    if (location.hostname !== 'localhost' && location.hostname !== '127.0.0.1'
-        && !location.hostname.startsWith('192.168.')) return;
-    const INTERVAL = 3000;
-    setInterval(() => fetch('./ping', { cache: 'no-store' }).catch(() => {}), INTERVAL);
-}());
 </script>
 </body>
 </html>

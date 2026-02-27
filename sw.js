@@ -54,10 +54,6 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     if (event.request.method !== 'GET') return;
 
-    // Don't intercept the heartbeat — let it reach the server
-    const url = new URL(event.request.url);
-    if (url.pathname === '/ping') return;
-
     event.respondWith(
         caches.match(event.request).then(cached => {
             if (cached) return cached;
