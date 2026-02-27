@@ -2,77 +2,113 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Russian Vocab Master - Dual Direction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Russian Vocab Master</title>
     <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --success: #27ae60; --error: #e74c3c; --bg: #f0f2f5; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); display: flex; justify-content: center; padding: 40px; color: var(--primary); }
-        .container { background: white; padding: 2.5rem; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); width: 100%; max-width: 650px; }
-        .btn { background: var(--accent); color: white; border: none; padding: 14px; border-radius: 10px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 10px; transition: 0.2s; }
-        .topic-list { margin: 15px 0; max-height: 250px; overflow-y: auto; border: 1px solid #e2e8f0; padding: 10px; border-radius: 10px; background: #fff; }
-        .topic-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #edf2f7; }
-        .card { border: 2px solid #e2e8f0; padding: 3rem; border-radius: 20px; text-align: center; margin-top: 20px; background: #fff; }
-        .word-display { font-size: 3.2rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; }
-        .option-btn { padding: 18px; border: 2px solid #edf2f7; border-radius: 12px; background: white; cursor: pointer; font-size: 1.1rem; transition: 0.2s; }
-        .option-btn:hover { border-color: var(--accent); background: #ebf8ff; }
-        .hidden { display: none; }
-        .progress-bar { width: 100%; height: 8px; background: #edf2f7; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+        :root { 
+            --primary: #2c3e50; 
+            --accent: #3498db; 
+            --success: #27ae60; 
+            --error: #e74c3c; 
+            --warning: #f39c12;
+            --bg: #f8fafc; 
+            --card-bg: #ffffff;
+        }
+        
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; color: var(--primary); }
+        .container { background: var(--card-bg); padding: 2.5rem; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.08); width: 90%; max-width: 500px; position: relative; }
+        
+        h1 { margin-top: 0; font-weight: 800; letter-spacing: -1px; text-align: center; color: var(--primary); }
+        
+        /* Pretty Error/Instruction Box */
+        .info-box { background: #ebf8ff; border-left: 4px solid var(--accent); padding: 20px; border-radius: 12px; margin: 20px 0; font-size: 0.9rem; line-height: 1.5; }
+        .info-box code { background: rgba(0,0,0,0.05); padding: 2px 5px; border-radius: 4px; font-family: monospace; font-weight: bold; }
+        .info-box strong { display: block; margin-bottom: 5px; color: var(--accent); font-size: 1rem; }
+        
+        /* Buttons */
+        .btn { border: none; padding: 14px 24px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: 700; font-size: 1rem; transition: all 0.2s ease; margin-top: 10px; }
+        .btn-primary { background: var(--accent); color: white; box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3); }
+        .btn-success { background: var(--success); color: white; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); }
+        .btn-error { background: var(--error); color: white; }
+        .btn:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* Topic List */
+        .topic-list { margin: 20px 0; max-height: 200px; overflow-y: auto; border: 1px solid #e2e8f0; padding: 10px; border-radius: 12px; }
+        .topic-item { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #f1f5f9; transition: background 0.2s; }
+        .topic-item:last-child { border-bottom: none; }
+        .topic-item:hover { background: #f8fafc; }
+
+        /* Quiz UI */
+        .card { text-align: center; padding: 20px 0; }
+        .word-display { font-size: 3rem; font-weight: 800; margin-bottom: 5px; color: var(--primary); }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 25px; }
+        .option-btn { padding: 16px; border: 2px solid #f1f5f9; border-radius: 15px; background: white; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        .option-btn:hover { border-color: var(--accent); background: #f0f9ff; color: var(--accent); }
+        
+        /* Custom Modal for Errors/Finish */
+        #custom-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 1000; visibility: hidden; opacity: 0; transition: 0.3s; }
+        #custom-modal.active { visibility: visible; opacity: 1; }
+        .modal-content { background: white; padding: 30px; border-radius: 20px; text-align: center; max-width: 400px; width: 80%; }
+
+        .progress-bar { width: 100%; height: 6px; background: #f1f5f9; border-radius: 10px; margin: 15px 0; overflow: hidden; }
         .progress-fill { height: 100%; background: var(--success); width: 0%; transition: 0.4s; }
-        .direction-tag { font-size: 0.75rem; text-transform: uppercase; background: #eee; padding: 4px 8px; border-radius: 4px; color: #666; font-weight: bold; }
-    /* If you don't want to display the direction tag or the mode label, hide them here */
-    #mode-tag, #mode-label { display: none; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div id="setup-screen">
-    <h1>Russian Study</h1>
-        <div id="server-instructions" class="hidden" style="background:#fff3cd; color:#856404; border:1px solid #ffeeba; padding:12px; border-radius:8px; margin:12px 0; font-size:0.95rem;">
-            <strong>Topics not auto-loaded.</strong>
-            <div style="margin-top:6px;">The page could not read the <code>topics/</code> folder directly. This happens when you open the HTML file with <code>file://</code> or when the server doesn't expose a directory index.</div>
-            <div style="margin-top:8px;">Quick fix: serve the project folder with a tiny HTTP server and reload the page. Example commands:</div>
-            <pre style="background:transparent; border:none; padding:6px 0; margin:6px 0; font-size:0.9rem;">python3 -m http.server 8000
-# then open http://localhost:8000/russian_app1.html</pre>
-            <div style="margin-top:6px;">Or with Node (if you have npm):</div>
-            <pre style="background:transparent; border:none; padding:6px 0; margin:6px 0; font-size:0.9rem;">npx http-server .
-# then open the printed URL in your browser</pre>
-            <div style="margin-top:6px; font-weight:700;">After serving, reload this page and topics will load automatically.</div>
-    </div>
+        <h1>Russian Master</h1>
+        
+        <div id="server-instructions" class="hidden info-box">
+            <strong>🚀 Ready to start?</strong>
+            To load your vocab automatically, please run a local server in this folder:
+            <code style="display:block; margin: 10px 0; background: #fff; padding: 10px; border-radius: 8px;">python3 -m http.server 8000</code>
+            Then visit: <code>http://localhost:8000</code>
+        </div>
+
         <div id="topic-container" class="hidden">
-            <h3>Select Topics:</h3>
+            <h3 style="margin-bottom:10px;">Select your topics:</h3>
             <div id="topic-list" class="topic-list"></div>
-            <button id="start-btn" class="btn" style="background: var(--success);" onclick="startSession()">Start</button>
+            <button class="btn btn-success" onclick="startSession()">Start Practice</button>
         </div>
     </div>
 
     <div id="quiz-screen" class="hidden">
-        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9rem; margin-bottom: 8px;">
+        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.8rem; color: #94a3b8; text-transform: uppercase;">
             <span id="score-text">Score: 0</span>
             <span id="queue-text">Cards Left: 0</span>
         </div>
         <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
         
         <div class="card">
-            <div id="mode-tag" class="direction-tag"></div>
-            <div id="mode-label" style="color:#a0aec0; font-size:0.75rem; text-transform: uppercase; margin: 10px 0;"></div>
+            <div id="mode-label" style="color:var(--accent); font-size:0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;"></div>
             <div class="word-display" id="target-word"></div>
-            <div id="target-pron" style="color: var(--accent); font-style: italic; font-size: 1.2rem; margin-bottom: 20px;"></div>
+            <div id="target-pron" style="color: #94a3b8; font-style: italic; font-size: 1.1rem; min-height: 1.5rem;"></div>
 
             <div id="mc-ui" class="options-grid"></div>
 
             <div id="open-ui" class="hidden">
-                <button class="btn" onclick="document.getElementById('ans-box').classList.remove('hidden')">Show Answer</button>
-                <div id="ans-box" class="hidden" style="margin-top: 20px;">
-                    <h2 id="correct-ans" style="color:var(--success); margin-bottom: 20px;"></h2>
-                    <p>Correct?</p>
+                <button class="btn btn-primary" onclick="showOpenAnswer()">Show Answer</button>
+                <div id="ans-box" class="hidden" style="margin-top: 20px; animation: fadeIn 0.3s;">
+                    <h2 id="correct-ans" style="color:var(--success); margin-bottom: 20px; font-size: 2rem;"></h2>
+                    <p style="font-weight: bold; color: #64748b;">Did you get it right?</p>
                     <div style="display:flex; gap:12px;">
-                        <button class="btn" style="background:var(--success)" onclick="handleResult(true)">Yes</button>
-                        <button class="btn" style="background:var(--error)" onclick="handleResult(false)">No</button>
+                        <button class="btn btn-success" onclick="handleResult(true)">Yes</button>
+                        <button class="btn btn-error" onclick="handleResult(false)">No</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div id="custom-modal">
+    <div class="modal-content">
+        <h2 id="modal-title">Notice</h2>
+        <p id="modal-body" style="color: #64748b; margin-bottom: 25px;"></p>
+        <button class="btn btn-primary" onclick="closeModal()">Got it</button>
     </div>
 </div>
 
@@ -83,14 +119,24 @@
     let score = 0;
     let totalAtStart = 0;
 
-    const formatName = (n) => n.replace('.txt', '').replace(/_/g, ' ').toLowerCase();
+    const formatName = (n) => n.replace('.txt', '').replace(/_/g, ' ').toUpperCase();
 
-    // The app no longer hard-codes bundled filenames. The "Load bundled topics" button
-    // now opens the directory picker so you can select the topics folder once.
-    // Attempt to auto-load topics on page load (parses ./topics/ directory listing when available)
+    // Pretty Alert Function
+    function showAlert(title, body, onConfirm = null) {
+        document.getElementById('modal-title').innerText = title;
+        document.getElementById('modal-body').innerText = body;
+        const modal = document.getElementById('custom-modal');
+        modal.classList.add('active');
+        window.modalCallback = onConfirm;
+    }
+
+    function closeModal() {
+        document.getElementById('custom-modal').classList.remove('active');
+        if(window.modalCallback) window.modalCallback();
+    }
+
     document.addEventListener('DOMContentLoaded', async () => {
         if (location.protocol === 'file:') {
-            // Browsers block fetching local folders when opened via file://
             document.getElementById('server-instructions').classList.remove('hidden');
             return;
         }
@@ -98,72 +144,10 @@
         if (!ok) document.getElementById('server-instructions').classList.remove('hidden');
     });
 
-    document.getElementById('file-input').addEventListener('change', async (e) => {
-        const files = e.target.files;
-        if (files.length === 0) return;
-        const listDiv = document.getElementById('topic-list');
-        listDiv.innerHTML = '';
-        rawFileData = {};
-
-        for (const file of files) {
-            const text = await file.text();
-            rawFileData[file.name] = text;
-            const div = document.createElement('div');
-            div.className = 'topic-item';
-            div.innerHTML = `<input type="checkbox" class="topic-cb" id="${file.name}" checked>
-                             <label style="margin-left:10px; cursor:pointer;" for="${file.name}">${formatName(file.name)}</label>`;
-            listDiv.appendChild(div);
-        }
-        document.getElementById('topic-container').classList.remove('hidden');
-    });
-
-    function startSession() {
-        masterList = [];
-        const checkboxes = document.querySelectorAll('.topic-cb:checked');
-        
-        checkboxes.forEach(cb => {
-            const text = rawFileData[cb.id];
-            text.split('\n').filter(l => l.includes(',')).forEach(l => {
-                const p = l.split(',').map(s => s.trim());
-                // Create English -> Russian Card
-                masterList.push({ question: p[0], answer: p[1], pron: p[2] || "", dir: "Eng ➔ Rus" });
-                // Create Russian -> English Card
-                masterList.push({ question: p[1], answer: p[0], pron: p[2] || "", dir: "Rus ➔ Eng" });
-            });
-        });
-
-        if (masterList.length === 0) return alert("No valid vocab found!");
-        queue = [...masterList].sort(() => Math.random() - 0.5); // Shuffle everything together
-        totalAtStart = queue.length;
-        document.getElementById('setup-screen').classList.add('hidden');
-        document.getElementById('quiz-screen').classList.remove('hidden');
-        nextQuestion();
-    }
-
-    // loadDefaultTopics removed; use the folder picker or file input instead.
-
-    // Try to auto-load topic files by requesting ./topics/ and parsing the directory listing for .txt links.
-    // Works when the app is served over HTTP and the server provides a directory index (e.g. python -m http.server).
     async function attemptAutoLoadTopics() {
-        // First try a deterministic manifest: topics/index.json
-        try {
-            const manifestRes = await fetch('./topics/index.json');
-            if (manifestRes.ok) {
-                const list = await manifestRes.json();
-                if (Array.isArray(list) && list.length > 0) {
-                    const ok = await loadTopicsFromList(list);
-                    return ok;
-                }
-            }
-        } catch (e) {
-            // ignore and fall back to directory parsing
-            console.warn('No index.json or failed to load it', e);
-        }
-
-        // Fallback: attempt to parse a directory listing at ./topics/
         try {
             const res = await fetch('./topics/');
-            if (!res.ok) throw new Error('no index');
+            if (!res.ok) return false;
             const html = await res.text();
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
@@ -171,56 +155,74 @@
                 .map(a => a.getAttribute('href'))
                 .filter(h => h && h.toLowerCase().endsWith('.txt'))
                 .map(h => h.split('/').pop());
-            if (links.length === 0) return false;
             return await loadTopicsFromList(links);
-        } catch (err) {
-            // auto-load failed — do nothing, manual file picker remains
-            console.warn('Auto-load topics failed', err);
-            return false;
-        }
+        } catch (err) { return false; }
     }
 
     async function loadTopicsFromList(names) {
         rawFileData = {};
         const listDiv = document.getElementById('topic-list');
         listDiv.innerHTML = '';
-        let anyLoaded = false;
         for (const name of names) {
             try {
                 const r = await fetch(`./topics/${name}`);
-                if (!r.ok) continue;
                 const text = await r.text();
                 rawFileData[name] = text;
                 const div = document.createElement('div');
                 div.className = 'topic-item';
-                div.innerHTML = `<input type="checkbox" class="topic-cb" id="${name}" checked>
-                                 <label style="margin-left:10px; cursor:pointer;" for="${name}">${formatName(name)}</label>`;
+                div.innerHTML = `<input type="checkbox" class="topic-cb" id="${name}" checked style="width:18px; height:18px; accent-color:var(--success)">
+                                 <label style="margin-left:12px; cursor:pointer; font-weight:600;" for="${name}">${formatName(name)}</label>`;
                 listDiv.appendChild(div);
-                anyLoaded = true;
-            } catch (e) {
-                console.warn('Failed to fetch topic', name, e);
-            }
+            } catch (e) {}
         }
-        if (anyLoaded) {
+        if (Object.keys(rawFileData).length > 0) {
             document.getElementById('topic-container').classList.remove('hidden');
             return true;
         }
         return false;
     }
 
+    function startSession() {
+        masterList = [];
+        const checkboxes = document.querySelectorAll('.topic-cb:checked');
+        checkboxes.forEach(cb => {
+            const text = rawFileData[cb.id];
+            text.split('\n').filter(l => l.includes(',')).forEach(l => {
+                const p = l.split(',').map(s => s.trim());
+                masterList.push({ question: p[0], answer: p[1], pron: p[2] || "", dir: "Eng ➔ Rus" });
+                masterList.push({ question: p[1], answer: p[0], pron: p[2] || "", dir: "Rus ➔ Eng" });
+            });
+        });
+
+        if (masterList.length === 0) {
+            showAlert("Empty Topic", "Please select a topic that contains vocabulary.");
+            return;
+        }
+        queue = [...masterList].sort(() => Math.random() - 0.5);
+        totalAtStart = queue.length;
+        score = 0;
+        document.getElementById('score-text').innerText = `Score: 0`;
+        document.getElementById('setup-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        nextQuestion();
+    }
+
     function nextQuestion() {
-        if (queue.length === 0) { alert("Dual-Mastery Finished!"); location.reload(); return; }
+        if (queue.length === 0) {
+            showAlert("🎉 Session Complete!", `Great job! You mastered ${totalAtStart} cards.`, () => {
+                // Return to start page
+                document.getElementById('quiz-screen').classList.add('hidden');
+                document.getElementById('setup-screen').classList.remove('hidden');
+            });
+            return;
+        }
+        
         document.getElementById('progress-fill').style.width = `${((totalAtStart - queue.length) / totalAtStart) * 100}%`;
         document.getElementById('queue-text').innerText = `Cards Left: ${queue.length}`;
         
         const item = queue[0];
-    document.getElementById('mode-tag').innerText = item.dir;
-    // show the question text in lowercase
-    document.getElementById('target-word').innerText = item.question.toLowerCase();
-        
-        // Only show pronunciation if the question is in Russian or we are showing the Russian answer
-    document.getElementById('target-pron').innerText = (item.dir === "Rus ➔ Eng" && item.pron) ? `[${item.pron.toLowerCase()}]` : "";
-        
+        document.getElementById('target-word').innerText = item.question.toLowerCase();
+        document.getElementById('target-pron').innerText = (item.dir === "Rus ➔ Eng" && item.pron) ? `[${item.pron.toLowerCase()}]` : "";
         document.getElementById('ans-box').classList.add('hidden');
         
         const mode = (Math.random() > 0.4 && masterList.length >= 8) ? 'mc' : 'open';
@@ -233,9 +235,7 @@
         document.getElementById('open-ui').classList.add('hidden');
         
         let choices = [item.answer];
-        // Distractors must come from the same answer type (don't mix languages in options)
         let potentialDistractors = masterList.filter(m => m.dir === item.dir).map(m => m.answer);
-        
         while (choices.length < 4 && choices.length < potentialDistractors.length) {
             let rand = potentialDistractors[Math.floor(Math.random() * potentialDistractors.length)];
             if (!choices.includes(rand)) choices.push(rand);
@@ -247,11 +247,15 @@
         choices.forEach(c => {
             const b = document.createElement('button');
             b.className = 'option-btn';
-            // display option text in lowercase, keep `c` available for comparison
             b.innerText = c.toLowerCase();
             b.onclick = () => {
-                if (c === item.answer) { score++; handleResult(true); }
-                else { alert(`Oops! Correct answer: ${item.answer}`); handleResult(false); }
+                if (c === item.answer) { 
+                    score++; 
+                    document.getElementById('score-text').innerText = `Score: ${score}`;
+                    handleResult(true); 
+                } else { 
+                    showAlert("Not quite!", `The correct answer was: ${item.answer}`, () => handleResult(false));
+                }
             };
             container.appendChild(b);
         });
@@ -261,7 +265,6 @@
         document.getElementById('mode-label').innerText = "Open Recall";
         document.getElementById('mc-ui').classList.add('hidden');
         document.getElementById('open-ui').classList.remove('hidden');
-        // If the revealed answer is Russian (Eng -> Rus card), show pronunciation below it
         if (item.dir === "Eng ➔ Rus" && item.pron) {
             document.getElementById('correct-ans').innerHTML = `${item.answer.toLowerCase()}<div style="color: var(--accent); font-style: italic; font-size:1rem; margin-top:8px;">[${item.pron.toLowerCase()}]</div>`;
         } else {
@@ -269,17 +272,15 @@
         }
     }
 
-    function handleResult(correct) {
-        const item = queue.shift();
-        if (!correct) queue.push(item); // Recommender: send back to end
-        document.getElementById('score-text').innerText = `Score: ${score}`;
-        nextQuestion();
+    function showOpenAnswer() {
+        document.getElementById('ans-box').classList.remove('hidden');
     }
 
-  // Send a silent "I'm still here" ping every 2 seconds
-    setInterval(() => {
-        fetch('/ping').catch(() => {});
-    }, 2000);
+    function handleResult(correct) {
+        const item = queue.shift();
+        if (!correct) queue.push(item);
+        nextQuestion();
+    }
 </script>
 </body>
 </html>
