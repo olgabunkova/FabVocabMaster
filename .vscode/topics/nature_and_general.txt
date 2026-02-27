@@ -1,0 +1,7 @@
+Lake, озеро, ozero
+River, река, reka
+Sea, море, morye
+Ocean, океан, okean
+Language, язык, yazyk
+People, люди, lyudi
+Mountain, гора, gora
