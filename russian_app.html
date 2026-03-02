@@ -372,7 +372,7 @@ async function loadTopics() {
             cb.type = 'checkbox';
             cb.className = 'topic-cb';
             cb.id = name;
-            cb.checked = true;
+            cb.checked = false; // Default to unselected; user opts in per topic
 
             const lbl = document.createElement('label');
             lbl.htmlFor = name;
