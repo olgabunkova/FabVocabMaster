@@ -54,6 +54,28 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
     if (event.request.method !== 'GET') return;
 
+    const url = new URL(event.request.url);
+    const isAppShellAsset =
+        url.pathname.endsWith('.html') ||
+        url.pathname.endsWith('.css') ||
+        url.pathname.endsWith('.js');
+
+    // For UI shell files, prefer network so local edits appear immediately.
+    if (isAppShellAsset) {
+        event.respondWith(
+            fetch(event.request)
+                .then(response => {
+                    if (response && response.status === 200) {
+                        const clone = response.clone();
+                        caches.open(CACHE).then(cache => cache.put(event.request, clone));
+                    }
+                    return response;
+                })
+                .catch(() => caches.match(event.request))
+        );
+        return;
+    }
+
     event.respondWith(
         caches.match(event.request).then(cached => {
             if (cached) return cached;

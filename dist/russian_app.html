@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="RusMaster">
+    <meta name="theme-color" content="#2c3e50">
+    <link rel="manifest" href="/assets/manifest-CH2BYGva.json">
+    <title>Russian Vocab Master</title>
+  <script type="module" crossorigin src="/assets/russian_app-CdkpEdln.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/russian_app-C8YRgzX-.css">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Setup screen -->
+    <div id="setup-screen">
+        <h1>Russian Master</h1>
+
+        <div id="server-instructions" class="hidden info-box">
+            <strong>🚀 Start the local server</strong>
+            Open a terminal in this folder and run:
+            <code style="display:block; margin: 10px 0; background:#fff; padding:10px; border-radius:8px;">python3 local_server.py</code>
+            Then open <code>http://localhost:8000/russian_app.html</code> in your browser.
+        </div>
+
+        <div id="topic-container" class="hidden">
+            <h3 style="margin-bottom:10px;">Select topics:</h3>
+            <div id="topic-list" class="topic-list"></div>
+            <button class="btn btn-success" id="start-btn">Start Practice</button>
+        </div>
+    </div>
+
+    <!-- Quiz screen -->
+    <div id="quiz-screen" class="hidden">
+        <div class="stats-row">
+            <span id="score-text">Score: 0</span>
+            <span id="queue-text">Cards Left: 0</span>
+        </div>
+        <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+
+        <div class="card">
+            <div id="mode-label" style="color:var(--accent); font-size:0.7rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px;"></div>
+            <div class="word-display" id="target-word"></div>
+            <div class="pron-display" id="target-pron"></div>
+            <!-- Multiple choice -->
+            <div id="mc-ui" class="options-grid hidden"></div>
+
+            <!-- Open recall -->
+            <div id="open-ui" class="hidden">
+                <button class="btn btn-primary" id="ans-reveal-btn">Show Answer</button>
+                <div id="ans-box" class="hidden">
+                    <h2 id="correct-ans"></h2>
+                    <p style="font-weight:bold; color:#64748b;">Did you get it right?</p>
+                    <div class="self-check-row">
+                        <button class="btn btn-success" id="yes-btn">Yes ✓</button>
+                        <button class="btn btn-error"   id="no-btn">No ✗</button>
+                    </div>
+                </div>
+            </div>
+
+            <button id="skip-btn" class="btn btn-ghost">I don't know</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal -->
+<div id="custom-modal" role="dialog" aria-modal="true">
+    <div class="modal-content">
+        <h2 id="modal-title">Notice</h2>
+        <p id="modal-body"></p>
+        <button class="btn btn-primary" id="modal-ok-btn">Got it</button>
+    </div>
+</div>
+
+</body>
+</html>

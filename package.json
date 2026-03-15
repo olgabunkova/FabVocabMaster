@@ -1,0 +1,32 @@
+{
+  "name": "fabvocabmaster",
+  "version": "1.0.0",
+  "description": "",
+  "main": "sw.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint \"src/**/*.{js,jsx}\"",
+    "format": "prettier --check .",
+    "test": "vitest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olgabunkova/FabVocabMaster.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/olgabunkova/FabVocabMaster/issues"
+  },
+  "homepage": "https://github.com/olgabunkova/FabVocabMaster#readme",
+  "devDependencies": {
+    "eslint": "^10.0.3",
+    "prettier": "^3.8.1",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.0"
+  }
+}
