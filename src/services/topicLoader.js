@@ -2,7 +2,7 @@ const INDEX_PATH = './topics/index.json';
 
 export async function fetchTopicManifest() {
     try {
-        const res = await fetch(INDEX_PATH);
+        const res = await fetch(INDEX_PATH, { cache: 'no-store' });
         if (!res.ok) return null;
         const names = await res.json();
         return Array.isArray(names) ? names : null;

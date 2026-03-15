@@ -6,7 +6,7 @@
  * are picked up automatically without editing this file.
  */
 
-const CACHE = 'rusmaster-v1';
+const CACHE = 'rusmaster-v2';
 
 // Core shell — always pre-cached
 const SHELL = [
@@ -59,9 +59,28 @@ self.addEventListener('fetch', event => {
         url.pathname.endsWith('.html') ||
         url.pathname.endsWith('.css') ||
         url.pathname.endsWith('.js');
+    const isTopicData =
+        url.pathname.endsWith('/topics/index.json') ||
+        url.pathname.includes('/topics/') && url.pathname.endsWith('.txt');
 
     // For UI shell files, prefer network so local edits appear immediately.
     if (isAppShellAsset) {
+        event.respondWith(
+            fetch(event.request)
+                .then(response => {
+                    if (response && response.status === 200) {
+                        const clone = response.clone();
+                        caches.open(CACHE).then(cache => cache.put(event.request, clone));
+                    }
+                    return response;
+                })
+                .catch(() => caches.match(event.request))
+        );
+        return;
+    }
+
+    // Topic data changes often; network-first prevents stale topic lists.
+    if (isTopicData) {
         event.respondWith(
             fetch(event.request)
                 .then(response => {
