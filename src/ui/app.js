@@ -31,6 +31,9 @@ export function initApp() {
         ansRevealBtn: $('ans-reveal-btn'),
         speakSlowBtn: $('speak-slow-btn'),
         speakFastBtn: $('speak-fast-btn'),
+        ansSpeechControls: $('ans-speech-controls'),
+        ansSpeakSlowBtn: $('ans-speak-slow-btn'),
+        ansSpeakFastBtn: $('ans-speak-fast-btn'),
         ansBox: $('ans-box'),
         yesBtn: $('yes-btn'),
         noBtn: $('no-btn'),
@@ -49,6 +52,7 @@ export function initApp() {
     elements.mainMenuBtn.addEventListener('click', returnToMainMenu);
     elements.ansRevealBtn.addEventListener('click', () => {
         show(elements.ansBox);
+        toggleAnswerSpeechControls();
         hide(elements.skipBtn);
     });
     elements.speakSlowBtn.addEventListener('click', () => {
@@ -58,6 +62,14 @@ export function initApp() {
     elements.speakFastBtn.addEventListener('click', () => {
         if (!activeCard) return;
         speakCardQuestion(activeCard, FAST_SPEECH_RATE);
+    });
+    elements.ansSpeakSlowBtn.addEventListener('click', () => {
+        if (!activeCard) return;
+        speakCardAnswer(activeCard, SLOW_SPEECH_RATE);
+    });
+    elements.ansSpeakFastBtn.addEventListener('click', () => {
+        if (!activeCard) return;
+        speakCardAnswer(activeCard, FAST_SPEECH_RATE);
     });
     elements.yesBtn.addEventListener('click', () => handleAnswer(true));
     elements.noBtn.addEventListener('click', () => handleAnswer(false));
@@ -149,6 +161,7 @@ export function initApp() {
         if (activeMode === 'open' && speechSupported && card.dir === 'Rus ➔ Eng') show(elements.speechControls);
         else hide(elements.speechControls);
         hide(elements.ansBox);
+        hide(elements.ansSpeechControls);
         show(elements.skipBtn);
 
         if (activeMode === 'mc') setupMultipleChoice(card);
@@ -221,6 +234,7 @@ export function initApp() {
 
     function continueAfterAnswer() {
         hide(elements.ansBox);
+        hide(elements.ansSpeechControls);
         show(elements.skipBtn);
         renderNextCard();
     }
@@ -229,6 +243,7 @@ export function initApp() {
         stopSpeaking();
         activeCard = null;
         hide(elements.ansBox);
+        hide(elements.ansSpeechControls);
         show(elements.skipBtn);
         hide(elements.quizScreen);
         show(elements.setupScreen);
@@ -259,6 +274,22 @@ export function initApp() {
     function speakCardQuestion(card, rate) {
         if (card.dir !== 'Rus ➔ Eng') return;
         speakText(card.question, 'ru-RU', rate);
+    }
+
+    function speakCardAnswer(card, rate) {
+        if (card.dir !== 'Eng ➔ Rus') return;
+        speakText(card.answer, 'ru-RU', rate);
+    }
+
+    function toggleAnswerSpeechControls() {
+        const shouldShow =
+            speechSupported &&
+            activeMode === 'open' &&
+            activeCard &&
+            activeCard.dir === 'Eng ➔ Rus';
+
+        if (shouldShow) show(elements.ansSpeechControls);
+        else hide(elements.ansSpeechControls);
     }
 
     function speakText(text, lang, rate) {
